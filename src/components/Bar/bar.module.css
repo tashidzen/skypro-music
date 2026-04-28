@@ -67,7 +67,11 @@
   cursor: pointer;
 }
 
-.player__btnPrev {
+.player__btnPrev,
+.player__btnPlay,
+.player__btnNext,
+.player__btnRepeat,
+.player__btnShuffle {
   padding: 5px;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -84,6 +88,8 @@
 .player__btnPrevSvg {
   width: 15px;
   height: 14px;
+  fill: inherit;
+  stroke: #d9d9d9;
 }
 
 .player__btnPlay {

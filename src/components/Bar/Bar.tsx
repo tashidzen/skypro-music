@@ -11,7 +11,7 @@ export default function Bar() {
           <div className={styles.bar__player}>
             <div className={styles.player__controls}>
               <div className={styles.player__btnPrev}>
-                <svg className={styles.player__btnPrevSvg}>
+                <svg className={cn(styles.player__btnPrevSvg, styles.btn)}>
                   <use xlinkHref="/img/icon/sprite.svg#icon-prev"></use>
                 </svg>
               </div>
@@ -20,7 +20,7 @@ export default function Bar() {
                   <use xlinkHref="/img/icon/sprite.svg#icon-play"></use>
                 </svg>
               </div>
-              <div className={styles.player__btnNext}>
+              <div className={cn(styles.player__btnNext, styles.btn)}>
                 <svg className={styles.player__btnNextSvg}>
                   <use xlinkHref="/img/icon/sprite.svg#icon-next"></use>
                 </svg>

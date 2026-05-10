@@ -16,9 +16,9 @@ export default function Bar() {
 
   if (!currentTrack) return <></>;
 
-  const playTrack = () => {
+  const playTrack = async () => {
     if (audioRef.current) {
-      audioRef.current.play();
+      await audioRef.current.play();
       dispatch(setIsPlay(true));
     }
   };

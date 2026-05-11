@@ -141,7 +141,8 @@
   stroke: #696969;
 }
 
-.btnIcon.active .player__btnRepeatSvg {
+.btnIcon.active .player__btnRepeatSvg,
+.btnIcon.active .player__btnShuffleSvg {
   stroke: #ffffff;
 }
 

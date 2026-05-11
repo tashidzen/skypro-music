@@ -40,13 +40,6 @@ export default function Bar() {
         dispatch(setIsPlay(true));
       } catch (error: unknown) {
         console.error('Ошибка воспроизведения:', error);
-        if (error instanceof Error && error?.name === 'AbortError') {
-          setTimeout(() => {
-            audioRef.current
-              ?.play()
-              .catch((e) => console.log('Повторная попытка не удалась:', e));
-          }, 100);
-        }
       }
     }
   };
@@ -129,7 +122,7 @@ export default function Bar() {
         loop={isLoop}
         onTimeUpdate={timeUpdate}
         onLoadedMetadata={onLoadedMetadata}
-        onEnded={() => console.log('next')}
+        onEnded={onNextTrack}
       ></audio>
       <div className={styles.bar__content}>
         <ProgressBar

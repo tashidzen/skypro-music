@@ -341,7 +341,7 @@
 }
 
 .audio {
-  /* display: none; */
+  display: none;
 }
 
 /* .trackPlay__likeDis {

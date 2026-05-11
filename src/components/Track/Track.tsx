@@ -1,19 +1,49 @@
+'use client';
+
 import Link from 'next/link';
 import styles from './track.module.css';
 import { formatTime } from '@/utils/helper';
 import { TrackType } from '@/sharedTypes/sharedTypes';
+import { useAppDispatch, useAppSelector } from '@/store/store';
+import { setCurrentTrack } from '@/store/features/trackSlice';
+import cn from 'classnames';
 
 type TrackProps = {
   track: TrackType;
 };
 
 export default function Track({ track }: TrackProps) {
+  const dispatch = useAppDispatch();
+  const currentTrack = useAppSelector((state) => state.tracks.currentTrack);
+  const isPlay = useAppSelector((state) => state.tracks.isPlay);
+
+  const isCurrentTrack = currentTrack?._id === track._id;
+
+  const onClickTrack = () => {
+    dispatch(setCurrentTrack(track));
+  };
+
   return (
-    <div className={styles.playlist__track}>
+    <div className={styles.playlist__track} onClick={onClickTrack}>
       <div className={styles.track__title}>
         <div className={styles.track__titleImage}>
-          <svg className={styles.track__titleSvg}>
-            <use xlinkHref="/img/icon/sprite.svg#icon-note"></use>
+          <svg
+            className={cn(styles.track__titleSvg, {
+              [styles.active]: isCurrentTrack && isPlay,
+            })}
+          >
+            {isCurrentTrack ? (
+              <circle
+                cx="8.5"
+                cy="8.5"
+                r="6"
+                className={cn(styles.playingDot, {
+                  [styles.animated]: isPlay,
+                })}
+              />
+            ) : (
+              <use xlinkHref="/img/icon/sprite.svg#icon-note"></use>
+            )}
           </svg>
         </div>
         <div>

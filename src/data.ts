@@ -8,10 +8,10 @@ export const data = [
     duration_in_seconds: 205,
     album: 'Chase',
     logo: null,
-    track_file:
-      'https://webdev-music-003b5b991590.herokuapp.com/media/music_files/Alexander_Nakarada_-_Chase.mp3',
+    track_file: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
     stared_user: [],
   },
+
   {
     _id: 9,
     name: 'Open Sea epic',

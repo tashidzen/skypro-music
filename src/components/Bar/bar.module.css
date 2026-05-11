@@ -16,11 +16,11 @@
   flex-direction: column;
 }
 
-.bar__playerProgress {
+/* .bar__playerProgress {
   width: 100%;
   height: 5px;
   background: #2e2e2e;
-}
+} */
 
 .bar__playerBlock {
   height: 73px;
@@ -139,6 +139,10 @@
   height: 12px;
   fill: transparent;
   stroke: #696969;
+}
+
+.btnIcon.active .player__btnRepeatSvg {
+  stroke: #ffffff;
 }
 
 .btnIcon:hover svg {
@@ -333,6 +337,10 @@
   border-radius: 50%;
   position: relative;
   margin-top: -7px;
+}
+
+.audio {
+  /* display: none; */
 }
 
 /* .trackPlay__likeDis {

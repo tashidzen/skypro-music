@@ -1,12 +1,12 @@
 export const data = [
   {
     _id: 8,
-    name: 'Chase',
+    name: 'Тест',
     author: 'Alexander Nakarada',
     release_date: '2005-06-11',
-    genre: ['Классическая музыка'],
+    genre: ['Тест'],
     duration_in_seconds: 205,
-    album: 'Chase',
+    album: 'Тест',
     logo: null,
     track_file: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
     stared_user: [],

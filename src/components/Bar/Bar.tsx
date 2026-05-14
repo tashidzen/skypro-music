@@ -4,22 +4,43 @@ import Link from 'next/link';
 import styles from './bar.module.css';
 import cn from 'classnames';
 import { useAppDispatch, useAppSelector } from '@/store/store';
-import { useRef } from 'react';
-import { setIsPlay } from '@/store/features/trackSlice';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import {
+  setIsPlay,
+  toggleShuffle,
+  setNextTrack,
+  setPrevTrack,
+} from '@/store/features/trackSlice';
+// import { getTimePanel } from '@/utils/helper';
+import ProgressBar from '../ProgressBar/ProgressBar';
 
 export default function Bar() {
   const currentTrack = useAppSelector((state) => state.tracks.currentTrack);
   const dispatch = useAppDispatch();
   const isPlay = useAppSelector((state) => state.tracks.isPlay);
 
+  const [isLoop, setIsLoop] = useState(false);
+  const [isShuffle, setIsShuffle] = useState(false);
+  const [isLoadedTrack, setIsLoadedTrack] = useState(false);
+  const [volume, setVolume] = useState(50);
+  const [currentTime, setCurrentTime] = useState(0);
+
   const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  useEffect(() => {
+    setIsLoadedTrack(false);
+  }, [currentTrack]);
 
   if (!currentTrack) return <></>;
 
   const playTrack = async () => {
     if (audioRef.current) {
-      await audioRef.current.play();
-      dispatch(setIsPlay(true));
+      try {
+        await audioRef.current.play();
+        dispatch(setIsPlay(true));
+      } catch (error: unknown) {
+        console.error('Ошибка воспроизведения:', error);
+      }
     }
   };
 
@@ -31,35 +52,90 @@ export default function Bar() {
   };
 
   const togglePlay = () => {
-    if (isPlay) {
-      pauseTrack();
-    } else {
-      playTrack();
+    if (audioRef.current) {
+      if (isPlay) {
+        pauseTrack();
+      } else {
+        playTrack();
+      }
     }
+  };
+
+  const toogleLoop = () => {
+    setIsLoop(!isLoop);
+  };
+
+  const timeUpdate = () => {
+    if (audioRef.current) {
+      // console.log(
+      //   getTimePanel(audioRef.current.currentTime, audioRef.current.duration),
+      // );
+      setCurrentTime(audioRef.current.currentTime);
+    }
+  };
+
+  const onLoadedMetadata = () => {
+    if (currentTrack && audioRef.current) {
+      audioRef.current.play();
+      dispatch(setIsPlay(true));
+      setIsLoadedTrack(true);
+    }
+  };
+
+  const changeVolume = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setVolume(Number(event.target.value));
+    if (audioRef.current) {
+      audioRef.current.volume = Number(event.target.value) / 100;
+    }
+  };
+
+  const onChangeProgress = (event: ChangeEvent<HTMLInputElement>) => {
+    if (audioRef.current) {
+      const inputTime = Number(event.target.value);
+
+      audioRef.current.currentTime = inputTime;
+      setCurrentTime(inputTime);
+    }
+  };
+
+  const onNextTrack = () => {
+    dispatch(setNextTrack());
+  };
+
+  const onPrevTrack = () => {
+    dispatch(setPrevTrack());
+  };
+
+  const onToogleShuffle = () => {
+    setIsShuffle(!isShuffle);
+    dispatch(toggleShuffle());
   };
 
   return (
     <div className={styles.bar}>
       <audio
+        className={styles.audio}
         ref={audioRef}
         src={currentTrack?.track_file}
-        onLoadedMetadata={() => {
-          if (currentTrack && audioRef.current) {
-            audioRef.current
-              .play()
-              .then(() => dispatch(setIsPlay(true)))
-              .catch((err) =>
-                console.log('Автовоспроизведение заблокировано', err),
-              );
-          }
-        }}
+        autoPlay
+        controls
+        loop={isLoop}
+        onTimeUpdate={timeUpdate}
+        onLoadedMetadata={onLoadedMetadata}
+        onEnded={onNextTrack}
       ></audio>
       <div className={styles.bar__content}>
-        <div className={styles.bar__playerProgress}></div>
+        <ProgressBar
+          max={audioRef.current?.duration || 0}
+          step={0.1}
+          readOnly={!isLoadedTrack}
+          value={currentTime}
+          onChange={onChangeProgress}
+        />
         <div className={styles.bar__playerBlock}>
           <div className={styles.bar__player}>
             <div className={styles.player__controls}>
-              <div className={styles.player__btnPrev}>
+              <div className={styles.player__btnPrev} onClick={onPrevTrack}>
                 <svg className={cn(styles.player__btnPrevSvg, styles.btn)}>
                   <use xlinkHref="/img/icon/sprite.svg#icon-prev"></use>
                 </svg>
@@ -74,17 +150,30 @@ export default function Bar() {
                   ></use>
                 </svg>
               </div>
-              <div className={cn(styles.player__btnNext, styles.btn)}>
+              <div
+                className={cn(styles.player__btnNext, styles.btn)}
+                onClick={onNextTrack}
+              >
                 <svg className={styles.player__btnNextSvg}>
                   <use xlinkHref="/img/icon/sprite.svg#icon-next"></use>
                 </svg>
               </div>
-              <div className={cn(styles.player__btnRepeat, styles.btnIcon)}>
+              <div
+                className={cn(styles.player__btnRepeat, styles.btnIcon, {
+                  [styles.active]: isLoop,
+                })}
+                onClick={toogleLoop}
+              >
                 <svg className={styles.player__btnRepeatSvg}>
                   <use xlinkHref="/img/icon/sprite.svg#icon-repeat"></use>
                 </svg>
               </div>
-              <div className={cn(styles.player__btnShuffle, styles.btnIcon)}>
+              <div
+                className={cn(styles.player__btnShuffle, styles.btnIcon, {
+                  [styles.active]: isShuffle,
+                })}
+                onClick={onToogleShuffle}
+              >
                 <svg className={styles.player__btnShuffleSvg}>
                   <use xlinkHref="/img/icon/sprite.svg#icon-shuffle"></use>
                 </svg>
@@ -136,6 +225,10 @@ export default function Bar() {
                   className={cn(styles.volume__progressLine, styles.btn)}
                   type="range"
                   name="range"
+                  min="0"
+                  max="100"
+                  value={volume}
+                  onChange={changeVolume}
                 />
               </div>
             </div>

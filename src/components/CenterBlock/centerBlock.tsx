@@ -5,11 +5,15 @@ import { data } from '@/data';
 import Track from '../Track/Track';
 import Filter from '../Filter/Filter';
 
-export default function CenterBlock() {
+type CenterBlockProp = {
+  namePlaylist?: string;
+};
+
+export default function CenterBlock({ namePlaylist }: CenterBlockProp) {
   return (
     <div className={styles.centerblock}>
       <Search />
-      <h2 className={styles.centerblock__h2}>Треки</h2>
+      <h2 className={styles.centerblock__h2}>{namePlaylist || 'Треки'}</h2>
       <Filter tracks={data} />
       <div className={styles.centerblock__content}>
         <div className={styles.content__title}>

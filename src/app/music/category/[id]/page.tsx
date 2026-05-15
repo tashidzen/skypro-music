@@ -2,25 +2,55 @@
 
 import { useParams } from 'next/navigation';
 import CenterBlock from '@/components/CenterBlock/centerBlock';
+import { useEffect } from 'react';
+import { getPlaylistById } from '@/services/tracks/tracksApi';
+import { useState } from 'react';
+import { TrackType } from '@/sharedTypes/sharedTypes';
+import { AxiosError } from 'axios';
 
 export default function CategoryPage() {
   const params = useParams<{ id: string }>();
+  const [tracks, setTracks] = useState<TrackType[]>([]);
+  const [playlistName, setPlaylistName] = useState('');
+  const [error, setError] = useState('');
 
-  const namePlaylistFunc = (id: string) => {
-    if (id === '1') {
-      return 'Плейлист дня';
-    } else if (id === '2') {
-      return '100 танцевальных хитов';
-    } else if (id === '3') {
-      return 'Инди заряд';
-    } else {
-      return 'Мои треки';
-    }
+  const playlistIdMapping: Record<string, string> = {
+    '1': '2', // Плейлист дня
+    '2': '3', // 100 танцевальных хитов
+    '3': '4', // Инди заряд
   };
+  const uiId = params.id;
+  const apiId = playlistIdMapping[uiId] || uiId;
+
+  useEffect(() => {
+    getPlaylistById(apiId)
+      .then(({ playlistName, tracks }) => {
+        setPlaylistName(playlistName);
+        setTracks(tracks);
+      })
+      .catch((error) => {
+        if (error instanceof AxiosError) {
+          if (error.response) {
+            console.log(error.response.data);
+            console.log(error.response.status);
+          } else if (error.request) {
+            console.log(error.request);
+            setError('Проблемы с интернетом');
+          } else {
+            console.log('Ошибка:', error.message);
+            setError('Неизвестная ошибка');
+          }
+        }
+      });
+  }, []);
 
   return (
     <>
-      <CenterBlock namePlaylist={namePlaylistFunc(params.id)} />
+      <CenterBlock
+        namePlaylist={playlistName}
+        error={error}
+        tracklist={tracks}
+      />
     </>
   );
 }

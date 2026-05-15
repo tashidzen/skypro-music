@@ -1,23 +1,40 @@
-import styles from './page.module.css';
-import Bar from '@/components/Bar/Bar';
-import MainNav from '@/components/MainNavigation/mainNavigation';
+'use client';
+
 import CenterBlock from '@/components/CenterBlock/centerBlock';
-import MainSidebar from '@/components/MainSidebar/mainSidebar';
+import { useEffect } from 'react';
+import { getTracks } from '@/services/tracks/tracksApi';
+import { useState } from 'react';
+import { TrackType } from '@/sharedTypes/sharedTypes';
+import { AxiosError } from 'axios';
 
 export default function Home() {
+  const [tracks, setTracks] = useState<TrackType[]>([]);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    getTracks()
+      .then((result) => {
+        setTracks(result);
+      })
+      .catch((error) => {
+        if (error instanceof AxiosError) {
+          if (error.response) {
+            console.log(error.response.data);
+            console.log(error.response.status);
+          } else if (error.request) {
+            console.log(error.request);
+            setError('Проблемы с интернетом');
+          } else {
+            console.log('Ошибка:', error.message);
+            setError('Неизвестная ошибка');
+          }
+        }
+      });
+  }, []);
+
   return (
     <>
-      {/* // <div className={styles.wrapper}>
-    //   <div className={styles.container}>
-    //     <main className={styles.main}>
-    //       <MainNav /> */}
-      <CenterBlock />
-      {/* <MainSidebar /> */}
-      {/* </main>
-        <Bar />
-        <footer className={styles.footer}></footer>
-      </div>
-    </div> */}
+      <CenterBlock error={error} tracklist={tracks} />
     </>
   );
 }

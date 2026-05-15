@@ -16,6 +16,16 @@
   color: #ffffff;
 }
 
+.centerblock__h3 {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 54px;
+  line-height: 72px;
+  letter-spacing: -0.8px;
+  margin-bottom: 45px;
+  color: #7868cc;
+}
+
 .centerblock__content {
   display: -webkit-box;
   display: -ms-flexbox;

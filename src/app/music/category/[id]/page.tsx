@@ -15,9 +15,9 @@ export default function CategoryPage() {
   const [error, setError] = useState('');
 
   const playlistIdMapping: Record<string, string> = {
-    '1': '2', // Плейлист дня
-    '2': '3', // 100 танцевальных хитов
-    '3': '4', // Инди заряд
+    '1': '2',
+    '2': '3',
+    '3': '4',
   };
   const uiId = params.id;
   const apiId = playlistIdMapping[uiId] || uiId;

@@ -36,6 +36,13 @@
   flex-direction: column;
 }
 
+.content__playlist_loading {
+  text-align: center;
+  padding: 50px;
+  color: #fff;
+  font-size: 18px;
+}
+
 .content__title {
   display: -webkit-box;
   display: -ms-flexbox;

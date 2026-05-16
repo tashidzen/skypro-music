@@ -13,6 +13,7 @@ export default function CategoryPage() {
   const [tracks, setTracks] = useState<TrackType[]>([]);
   const [playlistName, setPlaylistName] = useState('');
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const playlistIdMapping: Record<string, string> = {
     '1': '2',
@@ -23,6 +24,7 @@ export default function CategoryPage() {
   const apiId = playlistIdMapping[uiId] || uiId;
 
   useEffect(() => {
+    setIsLoading(true);
     getPlaylistById(apiId)
       .then(({ playlistName, tracks }) => {
         setPlaylistName(playlistName);
@@ -41,6 +43,9 @@ export default function CategoryPage() {
             setError('Неизвестная ошибка');
           }
         }
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   }, []);
 
@@ -50,6 +55,7 @@ export default function CategoryPage() {
         namePlaylist={playlistName}
         error={error}
         tracklist={tracks}
+        isLoading={isLoading}
       />
     </>
   );

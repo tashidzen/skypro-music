@@ -10,8 +10,10 @@ import { AxiosError } from 'axios';
 export default function Home() {
   const [tracks, setTracks] = useState<TrackType[]>([]);
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    setIsLoading(true);
     getTracks()
       .then((result) => {
         setTracks(result);
@@ -29,12 +31,15 @@ export default function Home() {
             setError('Неизвестная ошибка');
           }
         }
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   }, []);
 
   return (
     <>
-      <CenterBlock error={error} tracklist={tracks} />
+      <CenterBlock error={error} tracklist={tracks} isLoading={isLoading} />
     </>
   );
 }

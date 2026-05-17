@@ -16,6 +16,16 @@
   color: #ffffff;
 }
 
+.centerblock__h3 {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 54px;
+  line-height: 72px;
+  letter-spacing: -0.8px;
+  margin-bottom: 45px;
+  color: #7868cc;
+}
+
 .centerblock__content {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -24,6 +34,13 @@
   -webkit-box-direction: normal;
   -ms-flex-direction: column;
   flex-direction: column;
+}
+
+.content__playlist_loading {
+  text-align: center;
+  padding: 50px;
+  color: #fff;
+  font-size: 18px;
 }
 
 .content__title {

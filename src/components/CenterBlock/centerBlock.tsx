@@ -8,7 +8,7 @@ import { TrackType } from '@/sharedTypes/sharedTypes';
 
 type CenterBlockProp = {
   namePlaylist?: string;
-  error?: string;
+  error?: string | null;
   tracklist: TrackType[];
   isLoading?: boolean;
 };
@@ -43,12 +43,12 @@ export default function CenterBlock({
           </div>
         </div>
         <div className={styles.content__playlist}>
-          {isLoading ? (
+          {error ? (
+            <div className={styles.content__playlist_loading}>{error}</div>
+          ) : isLoading ? (
             <div className={styles.content__playlist_loading}>
               Загрузка треков...
             </div>
-          ) : error ? (
-            <div className={styles.content__playlist_loading}>{error}</div>
           ) : (
             tracklist.map((track) => (
               <div key={track._id} className={styles.playlist__item}>

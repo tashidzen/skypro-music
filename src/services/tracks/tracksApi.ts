@@ -10,16 +10,11 @@ export const getTracks = async (): Promise<TrackType[]> => {
 
 export const getPlaylistById = async (
   id: string | number,
-): Promise<{ playlistName: string; tracks: TrackType[] }> => {
+): Promise<{ playlistName: string; items: number[] }> => {
   const result = await axios(`${BASE_URL}/catalog/selection/${id}/`);
-  const playlist = result.data.data;
-  const allTracks = await getTracks();
-  // Фильтруем треки, которые есть в плейлисте
-  const playlistTracks = allTracks.filter((track) =>
-    playlist.items.includes(track._id),
-  );
+  const playlistData = result.data.data;
   return {
-    playlistName: playlist.name,
-    tracks: playlistTracks,
+    items: playlistData.items,
+    playlistName: playlistData.name,
   };
 };

@@ -7,6 +7,7 @@ import { useState } from 'react';
 
 export default function MainNav() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isAuth, setIsAuth] = useState(false);
 
   const switchMenu = () => {
     if (isMenuOpen === true) {
@@ -46,8 +47,8 @@ export default function MainNav() {
               </Link>
             </li>
             <li className={styles.menu__item}>
-              <Link href="../signin.html" className={styles.menu__link}>
-                Войти
+              <Link href="/auth/signin" className={styles.menu__link}>
+                {isAuth ? 'Выйти' : 'Войти'}
               </Link>
             </li>
           </ul>

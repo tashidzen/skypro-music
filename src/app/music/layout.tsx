@@ -1,20 +1,24 @@
-import styles from './page.module.css';
+import styles from './layout.module.css';
 import Bar from '@/components/Bar/Bar';
 import MainNav from '@/components/MainNavigation/mainNavigation';
-import CenterBlock from '@/components/CenterBlock/centerBlock';
 import MainSidebar from '@/components/MainSidebar/mainSidebar';
+import { ReactNode } from 'react';
 
-export default function Home() {
+interface PlaylistLayoutProps {
+  children: ReactNode;
+}
+
+export default function PlaylistLayout({ children }: PlaylistLayoutProps) {
   return (
     <div className={styles.wrapper}>
       <div className={styles.container}>
         <main className={styles.main}>
           <MainNav />
-          <CenterBlock />
+          {children}
           <MainSidebar />
         </main>
         <Bar />
-        <footer className={styles.footer}></footer>
+        <footer></footer>
       </div>
     </div>
   );

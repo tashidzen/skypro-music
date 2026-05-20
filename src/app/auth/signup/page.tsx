@@ -1,17 +1,24 @@
 'use client';
 
-import { registerUser } from '@/services/auth/authAPI';
+import { getTokens, registerUser } from '@/services/auth/authAPI';
 import styles from './signup.module.css';
 import classNames from 'classnames';
 import Link from 'next/link';
 import { ChangeEvent, useState } from 'react';
 import { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
+import { useAppDispatch } from '@/store/store';
+import {
+  setAccessToken,
+  setRefreshToken,
+  setUsername,
+} from '@/store/features/authSlice';
 
 export default function SignUp() {
+  const dispatch = useAppDispatch();
   const router = useRouter();
   const [email, setEmail] = useState('');
-  const [username, setUsername] = useState('');
+  const [username, setUsernames] = useState('');
   const [password, setPassword] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -22,7 +29,7 @@ export default function SignUp() {
   };
 
   const onChangeUsername = (e: ChangeEvent<HTMLInputElement>) => {
-    setUsername(e.target.value);
+    setUsernames(e.target.value);
   };
 
   const onChangePassword = (e: ChangeEvent<HTMLInputElement>) => {
@@ -54,7 +61,12 @@ export default function SignUp() {
 
     registerUser({ email, username, password, repeatPassword })
       .then((res) => {
-        console.log(res);
+        dispatch(setUsername(res.username));
+        return getTokens({ email, password });
+      })
+      .then((res) => {
+        dispatch(setAccessToken(res.access));
+        dispatch(setRefreshToken(res.refresh));
         router.push('/music/main');
       })
       .catch((error) => {

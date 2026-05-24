@@ -47,15 +47,17 @@ export default function MainNav() {
         <div className={styles.nav__menu}>
           <ul className={styles.menu__list}>
             <li className={styles.menu__item}>
-              <Link href="#" className={styles.menu__link}>
+              <Link href="/music/main" className={styles.menu__link}>
                 Главное
               </Link>
             </li>
-            <li className={styles.menu__item}>
-              <Link href="#" className={styles.menu__link}>
-                Мой плейлист
-              </Link>
-            </li>
+            {isAuth ? (
+              <li className={styles.menu__item}>
+                <Link href="/music/favorite" className={styles.menu__link}>
+                  Мои треки
+                </Link>
+              </li>
+            ) : null}
             <li className={styles.menu__item}>
               <p onClick={logout} className={styles.menu__link}>
                 {isAuth ? 'Выйти' : 'Войти'}

@@ -5,8 +5,9 @@ import styles from './layout.module.css';
 import Bar from '@/components/Bar/Bar';
 import MainNav from '@/components/MainNavigation/mainNavigation';
 import MainSidebar from '@/components/MainSidebar/mainSidebar';
-import { ReactNode } from 'react';
+import { ReactNode, use } from 'react';
 import { useInitAuth } from '@/hooks/useInitAuth';
+import { useFavoriteTracks } from '@/hooks/useFavoriteTracks';
 
 interface PlaylistLayoutProps {
   children: ReactNode;
@@ -14,6 +15,7 @@ interface PlaylistLayoutProps {
 
 export default function PlaylistLayout({ children }: PlaylistLayoutProps) {
   useInitAuth();
+  useFavoriteTracks();
   return (
     <div className={styles.wrapper}>
       <div className={styles.container}>

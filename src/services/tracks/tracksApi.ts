@@ -38,3 +38,13 @@ export const removeLike = (access: string, id: number) => {
     },
   });
 };
+
+export const getMyPlaylist = async (access: string): Promise<TrackType[]> => {
+  return axios(BASE_URL + '/catalog/track/favorite/all/', {
+    headers: {
+      Authorization: `Bearer ${access}`,
+    },
+  }).then((result) => {
+    return result.data.data;
+  });
+};

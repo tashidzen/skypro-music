@@ -108,8 +108,8 @@
 }
 
 .track__timeSvg.liked {
-  fill: #ad61ff;
-  stroke: #ad61ff;
+  fill: #696969;
+  stroke: #ffffff;
 }
 
 .track__timeText {

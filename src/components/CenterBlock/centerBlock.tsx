@@ -49,6 +49,10 @@ export default function CenterBlock({
             <div className={styles.content__playlist_loading}>
               Загрузка треков...
             </div>
+          ) : tracklist.length === 0 ? (
+            <div className={styles.content__playlist_empty}>
+              🎧 Список треков пуст
+            </div>
           ) : (
             tracklist.map((track) => (
               <div key={track._id} className={styles.playlist__item}>

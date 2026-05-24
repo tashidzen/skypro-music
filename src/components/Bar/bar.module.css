@@ -179,7 +179,7 @@
   100% {
     transform: scale(1);
     fill: transparent;
-    stroke: #ad61ff;
+    stroke: #696969;
   }
 }
 
@@ -188,8 +188,8 @@
 }
 
 .liked svg {
-  fill: #AD61FF;
-  stroke: #AD61FF;
+  fill: #696969;
+  stroke: #ffffff;
 }
 
 .player__trackPlay {

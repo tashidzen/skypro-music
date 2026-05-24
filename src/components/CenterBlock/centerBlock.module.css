@@ -36,7 +36,8 @@
   flex-direction: column;
 }
 
-.content__playlist_loading {
+.content__playlist_loading,
+.content__playlist_empty {
   text-align: center;
   padding: 50px;
   color: #fff;

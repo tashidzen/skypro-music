@@ -5,6 +5,7 @@ import Search from '../Search/Search';
 import Track from '../Track/Track';
 import Filter from '../Filter/Filter';
 import { TrackType } from '@/sharedTypes/sharedTypes';
+import { useMemo } from 'react';
 
 type CenterBlockProp = {
   namePlaylist?: string;
@@ -19,12 +20,27 @@ export default function CenterBlock({
   tracklist,
   isLoading,
 }: CenterBlockProp) {
+  const filterProps = useMemo(
+    () => ({
+      tracks: tracklist,
+    }),
+    [tracklist],
+  );
+
+  const renderedTracks = useMemo(() => {
+    return tracklist.map((track) => (
+      <div key={track._id} className={styles.playlist__item}>
+        <Track track={track} playlist={tracklist} />
+      </div>
+    ));
+  }, [tracklist]);
+
   return (
     <div className={styles.centerblock}>
       <Search />
       <h2 className={styles.centerblock__h2}>{namePlaylist || 'Треки'}</h2>
       <h3 className={styles.centerblock__h3}>{error}</h3>
-      <Filter tracks={tracklist} />
+      <Filter {...filterProps} />
       <div className={styles.centerblock__content}>
         <div className={styles.content__title}>
           <div className={cn(styles.playlistTitle__col, styles.col01)}>
@@ -54,11 +70,7 @@ export default function CenterBlock({
               🎧 Список треков пуст
             </div>
           ) : (
-            tracklist.map((track) => (
-              <div key={track._id} className={styles.playlist__item}>
-                <Track track={track} playlist={tracklist} />
-              </div>
-            ))
+            renderedTracks
           )}
         </div>
       </div>

@@ -4,7 +4,7 @@ import { addLikedTracks, removeLikedTracks } from '@/store/features/trackSlice';
 import { useAppDispatch, useAppSelector } from '@/store/store';
 import { withReauth } from '@/utils/withReAuth';
 import { AxiosError } from 'axios';
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 
 type returnTypeHook = {
   isLoading: boolean;
@@ -22,11 +22,10 @@ export const useLikeTrack = (track: TrackType | null): returnTypeHook => {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
-  const toggleLike = () => {
+  const toggleLike = useCallback(() => {
     if (!access) {
       return setErrorMsg('Нет авторизации');
     }
-
     const actionApi = isLike ? removeLike : addLike;
     const actionSlice = isLike ? removeLikedTracks : addLikedTracks;
 
@@ -56,7 +55,7 @@ export const useLikeTrack = (track: TrackType | null): returnTypeHook => {
           setIsLoading(false);
         });
     }
-  };
+  }, [access, isLike, track, refresh, dispatch]);
 
   return {
     isLoading,

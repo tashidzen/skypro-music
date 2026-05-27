@@ -107,6 +107,11 @@
   stroke: #696969;
 }
 
+.track__timeSvg.liked {
+  fill: #696969;
+  stroke: #ffffff;
+}
+
 .track__timeText {
   font-style: normal;
   font-weight: 400;

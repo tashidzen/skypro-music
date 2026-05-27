@@ -13,6 +13,7 @@ import {
 } from '@/store/features/trackSlice';
 // import { getTimePanel } from '@/utils/helper';
 import ProgressBar from '../ProgressBar/ProgressBar';
+import { useLikeTrack } from '@/hooks/useLikeTracks';
 
 export default function Bar() {
   const currentTrack = useAppSelector((state) => state.tracks.currentTrack);
@@ -24,6 +25,16 @@ export default function Bar() {
   const [isLoadedTrack, setIsLoadedTrack] = useState(false);
   const [volume, setVolume] = useState(50);
   const [currentTime, setCurrentTime] = useState(0);
+  const [animate, setAnimate] = useState(false);
+
+  const { toggleLike, isLike } = useLikeTrack(currentTrack);
+
+  const handleLikeClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    setAnimate(true);
+    e.stopPropagation();
+    toggleLike();
+    setTimeout(() => setAnimate(false), 300);
+  };
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -199,17 +210,32 @@ export default function Bar() {
                 </div>
               </div>
 
-              <div className={styles.trackPlay__dislike}>
-                <div className={cn(styles.player__btnShuffle, styles.btnIcon)}>
-                  <svg className={styles.trackPlay__likeSvg}>
-                    <use xlinkHref="/img/icon/sprite.svg#icon-like"></use>
-                  </svg>
-                </div>
-                <div className={cn(styles.trackPlay__dislike, styles.btnIcon)}>
-                  <svg className={styles.trackPlay__dislikeSvg}>
-                    <use xlinkHref="/img/icon/sprite.svg#icon-dislike"></use>
-                  </svg>
-                </div>
+              <div
+                className={styles.trackPlay__dislike}
+                onClick={handleLikeClick}
+              >
+                {isLike ? (
+                  <div
+                    className={cn(styles.player__btnShuffle, styles.btnIcon, {
+                      [styles.likeAnimate]: animate,
+                      [styles.liked]: isLike,
+                    })}
+                  >
+                    <svg className={styles.trackPlay__likeSvg}>
+                      <use xlinkHref="/img/icon/sprite.svg#icon-like"></use>
+                    </svg>
+                  </div>
+                ) : (
+                  <div
+                    className={cn(styles.trackPlay__dislike, styles.btnIcon, {
+                      [styles.likeAnimate]: animate,
+                    })}
+                  >
+                    <svg className={styles.trackPlay__dislikeSvg}>
+                      <use xlinkHref="/img/icon/sprite.svg#icon-dislike"></use>
+                    </svg>
+                  </div>
+                )}
               </div>
             </div>
           </div>

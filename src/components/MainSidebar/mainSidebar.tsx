@@ -1,16 +1,33 @@
+'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
 import styles from './mainSidebar.module.css';
+import { useAppDispatch, useAppSelector } from '@/store/store';
+import { clearUser } from '@/store/features/authSlice';
+import { useRouter } from 'next/navigation';
 
 export default function MainSidebar() {
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+  const username = useAppSelector((state) => state.auth.username);
+  const isAuth = useAppSelector((state) => !!state.auth.access);
+
+  const logout = () => {
+    dispatch(clearUser());
+    router.push('/auth/signin');
+  };
+
   return (
     <div className={styles.main__sidebar}>
       <div className={styles.sidebar__personal}>
-        <p className={styles.sidebar__personalName}>Sergey.Ivanov</p>
+        <p className={styles.sidebar__personalName}>{username || 'Гость'}</p>
         <div className={styles.sidebar__icon}>
-          <svg>
-            <use xlinkHref="/img/icon/sprite.svg#logout"></use>
-          </svg>
+          {isAuth ? (
+            <svg onClick={logout}>
+              <use xlinkHref="/img/icon/sprite.svg#logout"></use>
+            </svg>
+          ) : null}
         </div>
       </div>
       <div className={styles.sidebar__block}>

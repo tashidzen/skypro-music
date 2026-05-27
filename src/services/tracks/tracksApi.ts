@@ -10,16 +10,41 @@ export const getTracks = async (): Promise<TrackType[]> => {
 
 export const getPlaylistById = async (
   id: string | number,
-): Promise<{ playlistName: string; tracks: TrackType[] }> => {
+): Promise<{ playlistName: string; items: number[] }> => {
   const result = await axios(`${BASE_URL}/catalog/selection/${id}/`);
-  const playlist = result.data.data;
-  const allTracks = await getTracks();
-  // Фильтруем треки, которые есть в плейлисте
-  const playlistTracks = allTracks.filter((track) =>
-    playlist.items.includes(track._id),
-  );
+  const playlistData = result.data.data;
   return {
-    playlistName: playlist.name,
-    tracks: playlistTracks,
+    items: playlistData.items,
+    playlistName: playlistData.name,
   };
+};
+
+export const addLike = (access: string, id: number) => {
+  return axios.post(
+    BASE_URL + `/catalog/track/${id}/favorite/`,
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${access}`,
+      },
+    },
+  );
+};
+
+export const removeLike = (access: string, id: number) => {
+  return axios.delete(BASE_URL + `/catalog/track/${id}/favorite/`, {
+    headers: {
+      Authorization: `Bearer ${access}`,
+    },
+  });
+};
+
+export const getMyPlaylist = async (access: string): Promise<TrackType[]> => {
+  return axios(BASE_URL + '/catalog/track/favorite/all/', {
+    headers: {
+      Authorization: `Bearer ${access}`,
+    },
+  }).then((result) => {
+    return result.data.data;
+  });
 };

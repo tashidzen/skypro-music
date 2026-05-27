@@ -1,14 +1,21 @@
 'use client';
 
-import { authUser } from '@/services/auth/authAPI';
+import { authUser, getTokens } from '@/services/auth/authAPI';
 import styles from './signin.module.css';
 import classNames from 'classnames';
 import Link from 'next/link';
 import { ChangeEvent, useState } from 'react';
 import { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
+import { useAppDispatch } from '@/store/store';
+import {
+  setAccessToken,
+  setRefreshToken,
+  setUsername,
+} from '@/store/features/authSlice';
 
 export default function Signin() {
+  const dispatch = useAppDispatch();
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -35,7 +42,12 @@ export default function Signin() {
 
     authUser({ email, password })
       .then((res) => {
-        console.log(res);
+        dispatch(setUsername(res.username));
+        return getTokens({ email, password });
+      })
+      .then((res) => {
+        dispatch(setAccessToken(res.access));
+        dispatch(setRefreshToken(res.refresh));
         router.push('/music/main');
       })
       .catch((error) => {

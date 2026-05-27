@@ -1,3 +1,5 @@
+'use client';
+
 import styles from './centerBlock.module.css';
 import cn from 'classnames';
 import Search from '../Search/Search';
@@ -5,13 +7,16 @@ import Search from '../Search/Search';
 import Track from '../Track/Track';
 import Filter from '../Filter/Filter';
 import { TrackType } from '@/sharedTypes/sharedTypes';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
+import { useAppDispatch } from '@/store/store';
+import { setPagePlaylist } from '@/store/features/trackSlice';
 
 type CenterBlockProp = {
   namePlaylist?: string;
   error?: string | null;
   tracklist: TrackType[];
   isLoading?: boolean;
+  pagePlaylist: TrackType[];
 };
 
 export default function CenterBlock({
@@ -19,12 +24,15 @@ export default function CenterBlock({
   error,
   tracklist,
   isLoading,
+  pagePlaylist,
 }: CenterBlockProp) {
+  const dispatch = useAppDispatch();
+
   const filterProps = useMemo(
     () => ({
-      tracks: tracklist,
+      tracks: pagePlaylist,
     }),
-    [tracklist],
+    [pagePlaylist],
   );
 
   const renderedTracks = useMemo(() => {
@@ -34,6 +42,12 @@ export default function CenterBlock({
       </div>
     ));
   }, [tracklist]);
+
+  useEffect(() => {
+    if (!isLoading && !error) {
+      dispatch(setPagePlaylist(pagePlaylist));
+    }
+  }, [isLoading, error]);
 
   return (
     <div className={styles.centerblock}>

@@ -3,10 +3,14 @@
 import FilterItem from '../FilterItem/FilterItem';
 import styles from './filter.module.css';
 import { TrackType } from '@/sharedTypes/sharedTypes';
-import { setFilterAuthors, setFilterGenres } from '@/store/features/trackSlice';
+import {
+  setFilterAuthors,
+  setFilterGenres,
+  setFilterYear,
+} from '@/store/features/trackSlice';
 import { useAppDispatch, useAppSelector } from '@/store/store';
 import { getUniqueValuesByKey } from '@/utils/helper';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import cn from 'classnames';
 
 type FilterProps = {
@@ -22,7 +26,9 @@ export default function Filter({ tracks }: FilterProps) {
   const selectedAuthors = useAppSelector(
     (state) => state.tracks.filters.authors,
   );
-  // const selectedYear = useAppSelector((state) => state.tracks.filters.years);
+  const selectedYearSort = useAppSelector(
+    (state) => state.tracks.filters.years,
+  );
   const selectedGenres = useAppSelector((state) => state.tracks.filters.genres);
 
   const authors = getUniqueValuesByKey(tracks, 'author');
@@ -35,6 +41,10 @@ export default function Filter({ tracks }: FilterProps) {
 
   const onSelectAuthor = (author: string) => {
     dispatch(setFilterAuthors(author));
+  };
+
+  const onSelectYearSort = (yearSort: string) => {
+    dispatch(setFilterYear(yearSort));
   };
 
   const onSelectGenre = (genre: string) => {
@@ -81,7 +91,13 @@ export default function Filter({ tracks }: FilterProps) {
             <div className={styles.filter__listWrapper}>
               <ul className={styles.filter__listScroll}>
                 {years.map((item, index) => (
-                  <li key={index} className={styles.filter__item}>
+                  <li
+                    onClick={() => onSelectYearSort(item)}
+                    key={index}
+                    className={cn(styles.filter__item, {
+                      [styles.active]: selectedYearSort === item,
+                    })}
+                  >
                     {item}
                   </li>
                 ))}

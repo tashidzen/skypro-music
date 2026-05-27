@@ -13,7 +13,9 @@ export default function Home() {
 
   useEffect(() => {
     const currentPlaylist =
-      filters.authors.length || filters.genres.length
+      filters.authors.length ||
+      filters.genres.length ||
+      filters.years !== 'По умолчанию'
         ? filteredTracks
         : allTracks;
     setPlaylist(currentPlaylist);

@@ -45,5 +45,16 @@ export const applyFilters = (state: initialStateType): TrackType[] => {
       return state.filters.genres.some((el) => track.genre.includes(el));
     });
   }
+
+  if (state.filters.search.length) {
+    const search = state.filters.search.toLowerCase();
+    filteredPlaylist = filteredPlaylist.filter((track) => {
+      return (
+        track.author.toLowerCase().includes(search) ||
+        track.name.toLowerCase().includes(search)
+      );
+    });
+  }
+
   return filteredPlaylist;
 };

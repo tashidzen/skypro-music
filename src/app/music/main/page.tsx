@@ -15,7 +15,8 @@ export default function Home() {
     const currentPlaylist =
       filters.authors.length ||
       filters.genres.length ||
-      filters.years !== 'По умолчанию'
+      filters.years !== 'По умолчанию' ||
+      filters.search !== ''
         ? filteredTracks
         : allTracks;
     setPlaylist(currentPlaylist);

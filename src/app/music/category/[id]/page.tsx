@@ -11,13 +11,13 @@ import { useAppSelector } from '@/store/store';
 
 export default function CategoryPage() {
   const params = useParams<{ id: string }>();
-  const { allTracks, fetchIsLoading, fetchError } = useAppSelector(
-    (state) => state.tracks,
-  );
+  const { allTracks, fetchIsLoading, fetchError, filteredTracks, filters } =
+    useAppSelector((state) => state.tracks);
   const [tracks, setTracks] = useState<TrackType[]>([]);
   const [playlistName, setPlaylistName] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [playlist, setPlaylist] = useState<TrackType[]>([]);
 
   const playlistIdMapping: Record<string, string> = {
     '1': '2',
@@ -59,12 +59,24 @@ export default function CategoryPage() {
     }
   }, [fetchIsLoading]);
 
+  useEffect(() => {
+    const currentPlaylist =
+      filters.authors.length ||
+      filters.genres.length ||
+      filters.years !== 'По умолчанию' ||
+      filters.search !== ''
+        ? filteredTracks
+        : tracks;
+    setPlaylist(currentPlaylist);
+  }, [filteredTracks, tracks]);
+
   return (
     <>
       <CenterBlock
+        pagePlaylist={tracks}
         namePlaylist={playlistName}
         error={error || fetchError}
-        tracklist={tracks}
+        tracklist={playlist}
         isLoading={isLoading}
       />
     </>

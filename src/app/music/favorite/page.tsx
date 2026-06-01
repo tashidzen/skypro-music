@@ -12,14 +12,20 @@ import {
   setFetchIsLoading,
 } from '@/store/features/trackSlice';
 import { withReauth } from '@/utils/withReAuth';
+import { TrackType } from '@/sharedTypes/sharedTypes';
 
 export default function FavoriteTracks() {
   const { access, refresh } = useAppSelector((state) => state.auth);
-  const { favoriteTracks, fetchError, fetchIsLoading } = useAppSelector(
-    (state) => state.tracks,
-  );
+  const {
+    favoriteTracks,
+    fetchError,
+    fetchIsLoading,
+    filteredTracks,
+    filters,
+  } = useAppSelector((state) => state.tracks);
   const dispatch = useAppDispatch();
   const [error, setError] = useState<string | null>(null);
+  const [playlist, setPlaylist] = useState<TrackType[]>([]);
 
   useEffect(() => {
     if (!access) return;
@@ -52,11 +58,23 @@ export default function FavoriteTracks() {
       });
   }, [access, refresh, dispatch]);
 
+  useEffect(() => {
+    const currentPlaylist =
+      filters.authors.length ||
+      filters.genres.length ||
+      filters.years !== 'По умолчанию' ||
+      filters.search !== ''
+        ? filteredTracks
+        : favoriteTracks;
+    setPlaylist(currentPlaylist);
+  }, [filteredTracks, favoriteTracks]);
+
   return (
     <CenterBlock
+      pagePlaylist={favoriteTracks}
       namePlaylist="Мои треки"
       error={error || fetchError}
-      tracklist={favoriteTracks}
+      tracklist={playlist}
       isLoading={fetchIsLoading}
     />
   );

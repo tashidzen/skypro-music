@@ -3,7 +3,6 @@
 import styles from './centerBlock.module.css';
 import cn from 'classnames';
 import Search from '../Search/Search';
-// import { data } from '@/data';
 import Track from '../Track/Track';
 import Filter from '../Filter/Filter';
 import { TrackType } from '@/sharedTypes/sharedTypes';

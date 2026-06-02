@@ -13,6 +13,7 @@ import {
   setRefreshToken,
   setUsername,
 } from '@/store/features/authSlice';
+import { toast } from 'react-toastify';
 
 export default function Signin() {
   const dispatch = useAppDispatch();
@@ -49,6 +50,12 @@ export default function Signin() {
         dispatch(setAccessToken(res.access));
         dispatch(setRefreshToken(res.refresh));
         router.push('/music/main');
+
+        toast.success('✨ Приятного прослушивания!', {
+          position: 'top-center',
+          autoClose: 2000,
+          theme: 'dark',
+        });
       })
       .catch((error) => {
         if (error instanceof AxiosError) {
@@ -56,12 +63,30 @@ export default function Signin() {
             console.log(error.response.data);
             console.log(error.response.status);
             setErrorMessage(error.response.data.message);
+
+            toast.error('🤷 Хм... что-то пошло не так', {
+              position: 'top-center',
+              autoClose: 3000,
+              theme: 'dark',
+            });
           } else if (error.request) {
             console.log(error.request);
             setErrorMessage('Проблемы с интернетом');
+
+            toast.error('🌐 Проблемы с интернетом', {
+              position: 'top-center',
+              autoClose: 3000,
+              theme: 'dark',
+            });
           } else {
             console.log('Ошибка:', error.message);
             setErrorMessage('Неизвестная ошибка');
+
+            toast.error('🤷 Хм... что-то пошло не так', {
+              position: 'top-center',
+              autoClose: 3000,
+              theme: 'dark',
+            });
           }
         }
         console.log(error);

@@ -20,7 +20,8 @@
     "react-dom": "19.2.4",
     "react-loading-skeleton": "^3.5.0",
     "react-redux": "^9.2.0",
-    "react-test-renderer": "^19.2.4"
+    "react-test-renderer": "^19.2.4",
+    "react-toastify": "^11.1.0"
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "^16.2.1",

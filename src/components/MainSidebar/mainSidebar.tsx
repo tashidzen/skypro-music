@@ -6,6 +6,7 @@ import styles from './mainSidebar.module.css';
 import { useAppDispatch, useAppSelector } from '@/store/store';
 import { clearUser } from '@/store/features/authSlice';
 import { useRouter } from 'next/navigation';
+import { toast } from 'react-toastify';
 
 export default function MainSidebar() {
   const dispatch = useAppDispatch();
@@ -16,6 +17,12 @@ export default function MainSidebar() {
   const logout = () => {
     dispatch(clearUser());
     router.push('/auth/signin');
+
+    toast.success('🎵 Музыка будет ждать тебя!', {
+      position: 'top-center',
+      autoClose: 2000,
+      theme: 'dark',
+    });
   };
 
   return (

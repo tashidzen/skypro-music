@@ -95,6 +95,11 @@
   text-align: end;
 }
 
+.skeleton_col04 {
+  display: block;
+  margin-left: auto;
+}
+
 .content__playlist {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -106,8 +111,8 @@
   overflow-y: auto;
 }
 
-.playlist__item {
+.track {
+  display: flex;
+  align-items: center;
   width: 100%;
-  display: block;
-  margin-bottom: 12px;
 }

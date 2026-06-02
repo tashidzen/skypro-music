@@ -111,6 +111,12 @@
   overflow-y: auto;
 }
 
+.playlist__item {
+  width: 100%;
+  display: block;
+  margin-bottom: 12px;
+}
+
 .track {
   display: flex;
   align-items: center;

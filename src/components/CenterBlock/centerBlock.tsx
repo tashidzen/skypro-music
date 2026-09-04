@@ -3,13 +3,14 @@
 import styles from './centerBlock.module.css';
 import cn from 'classnames';
 import Search from '../Search/Search';
-// import { data } from '@/data';
 import Track from '../Track/Track';
 import Filter from '../Filter/Filter';
 import { TrackType } from '@/sharedTypes/sharedTypes';
 import { useEffect, useMemo } from 'react';
 import { useAppDispatch } from '@/store/store';
 import { setPagePlaylist } from '@/store/features/trackSlice';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 type CenterBlockProp = {
   namePlaylist?: string;
@@ -42,6 +43,44 @@ export default function CenterBlock({
       </div>
     ));
   }, [tracklist]);
+
+  // Компонент скелетонов для трека
+  const TrackSkeleton = () => (
+    <div className={styles.track}>
+      <div className={styles.col01}>
+        <Skeleton
+          width="90%"
+          baseColor="#271A58"
+          highlightColor="#7868CC"
+          borderRadius={4}
+        />
+      </div>
+      <div className={styles.col02}>
+        <Skeleton
+          width="80%"
+          baseColor="#271A58"
+          highlightColor="#7868CC"
+          borderRadius={4}
+        />
+      </div>
+      <div className={styles.col03}>
+        <Skeleton
+          width="70%"
+          baseColor="#271A58"
+          highlightColor="#7868CC"
+          borderRadius={4}
+        />
+      </div>
+      <div className={styles.skeleton_col04}>
+        <Skeleton
+          width="60px"
+          baseColor="#271A58"
+          highlightColor="#7868CC"
+          borderRadius={4}
+        />
+      </div>
+    </div>
+  );
 
   useEffect(() => {
     if (!isLoading && !error) {
@@ -76,9 +115,11 @@ export default function CenterBlock({
           {error ? (
             <div className={styles.content__playlist_loading}>{error}</div>
           ) : isLoading ? (
-            <div className={styles.content__playlist_loading}>
-              Загрузка треков...
-            </div>
+            <>
+              <TrackSkeleton />
+              <TrackSkeleton />
+              <TrackSkeleton />
+            </>
           ) : tracklist.length === 0 ? (
             <div className={styles.content__playlist_empty}>
               🎧 Список треков пуст

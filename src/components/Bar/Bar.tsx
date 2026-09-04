@@ -11,7 +11,6 @@ import {
   setNextTrack,
   setPrevTrack,
 } from '@/store/features/trackSlice';
-// import { getTimePanel } from '@/utils/helper';
 import ProgressBar from '../ProgressBar/ProgressBar';
 import { useLikeTrack } from '@/hooks/useLikeTracks';
 
@@ -78,9 +77,6 @@ export default function Bar() {
 
   const timeUpdate = () => {
     if (audioRef.current) {
-      // console.log(
-      //   getTimePanel(audioRef.current.currentTime, audioRef.current.duration),
-      // );
       setCurrentTime(audioRef.current.currentTime);
     }
   };

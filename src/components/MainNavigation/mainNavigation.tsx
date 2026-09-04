@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/store/store';
 import { clearUser } from '@/store/features/authSlice';
 import { useRouter } from 'next/navigation';
+import { toast } from 'react-toastify';
 
 export default function MainNav() {
   const dispatch = useAppDispatch();
@@ -25,19 +26,27 @@ export default function MainNav() {
   const logout = () => {
     dispatch(clearUser());
     router.push('/auth/signin');
+
+    toast.success('🎵 Музыка всегда с тобой!', {
+      position: 'top-center',
+      autoClose: 2000,
+      theme: 'dark',
+    });
   };
 
   return (
     <nav className={styles.main__nav}>
-      <div className={styles.nav__logo}>
-        <Image
-          width={250}
-          height={170}
-          className={styles.logo__image}
-          src="/img/logo.png"
-          alt={'logo'}
-        />
-      </div>
+      <Link href="/music/main">
+        <div className={styles.nav__logo}>
+          <Image
+            width={250}
+            height={170}
+            className={styles.logo__image}
+            src="/img/logo.png"
+            alt={'logo'}
+          />
+        </div>
+      </Link>
       <div className={styles.nav__burger} onClick={switchMenu}>
         <span className={styles.burger__line}></span>
         <span className={styles.burger__line}></span>
